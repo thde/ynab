@@ -1,5 +1,7 @@
 # ynab
 
+[![Go Reference](https://pkg.go.dev/badge/thde.io/ynab.svg)](https://pkg.go.dev/thde.io/ynab) [![test](https://github.com/thde/ynab/actions/workflows/test.yml/badge.svg)](https://github.com/thde/ynab/actions/workflows/test.yml) [![Go Report Card](https://goreportcard.com/badge/thde.io/ynab)](https://goreportcard.com/report/thde.io/ynab)
+
 Go client for the [YNAB API](https://api.ynab.com/), generated from the official OpenAPI spec using [oapi-codegen](https://github.com/oapi-codegen/oapi-codegen).
 
 ## Installation
