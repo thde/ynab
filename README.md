@@ -20,7 +20,7 @@ if err != nil {
     log.Fatal(err)
 }
 
-resp, err := client.GetBudgetsWithResponse(ctx, nil)
+resp, err := client.GetPlansWithResponse(ctx, nil)
 ```
 
 Get a personal access token from your [YNAB developer settings](https://app.ynab.com/settings/developer).
@@ -61,10 +61,11 @@ Most endpoints accept a `LastKnowledgeOfServer` parameter. When set, the server 
 var knowledge int64
 
 // First call, fetch everything.
-resp, err := client.GetAccountsWithResponse(ctx, budgetID, &ynab.GetAccountsParams{})
+resp, err := client.GetAccountsWithResponse(ctx, planID, &ynab.GetAccountsParams{})
+knowledge = resp.JSON200.Data.ServerKnowledge
 
-// Persist resp.JSON200.Data.ServerKnowledge, then on subsequent calls:
-resp, err = client.GetAccountsWithResponse(ctx, budgetID, &ynab.GetAccountsParams{
+// Persist knowledge, then on subsequent calls:
+resp, err = client.GetAccountsWithResponse(ctx, planID, &ynab.GetAccountsParams{
     LastKnowledgeOfServer: knowledge,
 })
 knowledge = resp.JSON200.Data.ServerKnowledge

@@ -8,7 +8,6 @@ generate:
   embedded-spec: false
 output-options:
   name-normalizer: ToCamelCaseWithInitialisms
-  initialism-overrides: true
   additional-initialisms:
     - YNAB
     - IDs
