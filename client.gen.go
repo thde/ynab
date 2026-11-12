@@ -1156,22 +1156,22 @@ type ExistingCategory struct {
 	// CategoryGroupID The id of the category group to which this category belongs.  An internal category group may not be specified.
 	CategoryGroupID openapi_types.UUID `json:"category_group_id,omitempty,omitzero"`
 
-	// GoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. Cannot be combined with goal_target_date and is not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
+	// GoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. 'yearly' also requires goal_target_date, the date the target is next due. 'monthly' accepts an optional goal_target_date, and 'weekly' cannot be combined with goal_target_date. Not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
 	GoalFrequency ExistingCategoryGoalFrequency `json:"goal_frequency,omitempty,omitzero"`
 
 	// GoalNeedsWholeAmount Whether the goal requires the full target amount each period. Only supported for 'NEED' goals, and not supported for Credit Card Payment categories or categories paired to a loan account. When true, the goal is configured as 'Set aside another...'. When false, the goal is configured as 'Refill up to...'.
 	GoalNeedsWholeAmount bool `json:"goal_needs_whole_amount,omitempty,omitzero"`
 
-	// GoalTarget The goal target amount in milliunits format.  If value is specified and goal has not already been configured for category, a monthly goal will be created for the category with this target amount.  If goal_type is not specified, it will default to 'NEED', or to 'MF' for Credit Card Payment categories and 'DEBT' for categories paired to a loan account. When updating a category, passing null removes any existing target.
+	// GoalTarget The goal target amount in milliunits format.  If value is specified and goal has not already been configured for category, a monthly goal will be created for the category with this target amount.  If goal_type is not specified, it will default to 'NEED', or to 'MF' for Credit Card Payment categories and 'DEBT' for categories paired to a loan account. Must not be negative. When updating a category, passing null removes any existing target. Passing 0 does too, except for a Credit Card Payment category's 'TBD' (Pay Off Balance by Date) target, where 0 is a valid amount because the card's balance sets it. Use null to remove that target.
 	GoalTarget int64 `json:"goal_target,omitempty,omitzero"`
 
-	// GoalTargetDate The goal target date in ISO format (e.g. 2016-12-01). Not supported for categories paired to a loan account.
+	// GoalTargetDate The goal target date in ISO format (e.g. 2016-12-01). Not supported for categories paired to a loan account. When combined with a goal_frequency of 'monthly' or 'yearly', this is the date the recurring target is next due. Required for yearly targets, so it cannot be removed from one.
 	GoalTargetDate openapi_types.Date `json:"goal_target_date,omitempty,omitzero"`
 	Name           string             `json:"name,omitempty,omitzero"`
 	Note           string             `json:"note,omitempty,omitzero"`
 }
 
-// ExistingCategoryGoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. Cannot be combined with goal_target_date and is not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
+// ExistingCategoryGoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. 'yearly' also requires goal_target_date, the date the target is next due. 'monthly' accepts an optional goal_target_date, and 'weekly' cannot be combined with goal_target_date. Not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
 type ExistingCategoryGoalFrequency string
 
 // ExistingTransaction defines model for ExistingTransaction.
@@ -1553,22 +1553,22 @@ type NewCategory struct {
 	// CategoryGroupID The id of the category group to which this category belongs.  An internal category group may not be specified.
 	CategoryGroupID openapi_types.UUID `json:"category_group_id"`
 
-	// GoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. Cannot be combined with goal_target_date and is not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
+	// GoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. 'yearly' also requires goal_target_date, the date the target is next due. 'monthly' accepts an optional goal_target_date, and 'weekly' cannot be combined with goal_target_date. Not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
 	GoalFrequency NewCategoryGoalFrequency `json:"goal_frequency,omitempty,omitzero"`
 
 	// GoalNeedsWholeAmount Whether the goal requires the full target amount each period. Only supported for 'NEED' goals, and not supported for Credit Card Payment categories or categories paired to a loan account. When true, the goal is configured as 'Set aside another...'. When false, the goal is configured as 'Refill up to...'.
 	GoalNeedsWholeAmount bool `json:"goal_needs_whole_amount,omitempty,omitzero"`
 
-	// GoalTarget The goal target amount in milliunits format.  If value is specified and goal has not already been configured for category, a monthly goal will be created for the category with this target amount.  If goal_type is not specified, it will default to 'NEED', or to 'MF' for Credit Card Payment categories and 'DEBT' for categories paired to a loan account. When updating a category, passing null removes any existing target.
+	// GoalTarget The goal target amount in milliunits format.  If value is specified and goal has not already been configured for category, a monthly goal will be created for the category with this target amount.  If goal_type is not specified, it will default to 'NEED', or to 'MF' for Credit Card Payment categories and 'DEBT' for categories paired to a loan account. Must not be negative. When updating a category, passing null removes any existing target. Passing 0 does too, except for a Credit Card Payment category's 'TBD' (Pay Off Balance by Date) target, where 0 is a valid amount because the card's balance sets it. Use null to remove that target.
 	GoalTarget int64 `json:"goal_target,omitempty,omitzero"`
 
-	// GoalTargetDate The goal target date in ISO format (e.g. 2016-12-01). Not supported for categories paired to a loan account.
+	// GoalTargetDate The goal target date in ISO format (e.g. 2016-12-01). Not supported for categories paired to a loan account. When combined with a goal_frequency of 'monthly' or 'yearly', this is the date the recurring target is next due. Required for yearly targets, so it cannot be removed from one.
 	GoalTargetDate openapi_types.Date `json:"goal_target_date,omitempty,omitzero"`
 	Name           string             `json:"name"`
 	Note           string             `json:"note,omitempty,omitzero"`
 }
 
-// NewCategoryGoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. Cannot be combined with goal_target_date and is not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
+// NewCategoryGoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. 'yearly' also requires goal_target_date, the date the target is next due. 'monthly' accepts an optional goal_target_date, and 'weekly' cannot be combined with goal_target_date. Not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
 type NewCategoryGoalFrequency string
 
 // NewTransaction defines model for NewTransaction.
@@ -1839,22 +1839,22 @@ type SaveCategory struct {
 	// CategoryGroupID The id of the category group to which this category belongs.  An internal category group may not be specified.
 	CategoryGroupID openapi_types.UUID `json:"category_group_id,omitempty,omitzero"`
 
-	// GoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. Cannot be combined with goal_target_date and is not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
+	// GoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. 'yearly' also requires goal_target_date, the date the target is next due. 'monthly' accepts an optional goal_target_date, and 'weekly' cannot be combined with goal_target_date. Not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
 	GoalFrequency SaveCategoryGoalFrequency `json:"goal_frequency,omitempty,omitzero"`
 
 	// GoalNeedsWholeAmount Whether the goal requires the full target amount each period. Only supported for 'NEED' goals, and not supported for Credit Card Payment categories or categories paired to a loan account. When true, the goal is configured as 'Set aside another...'. When false, the goal is configured as 'Refill up to...'.
 	GoalNeedsWholeAmount bool `json:"goal_needs_whole_amount,omitempty,omitzero"`
 
-	// GoalTarget The goal target amount in milliunits format.  If value is specified and goal has not already been configured for category, a monthly goal will be created for the category with this target amount.  If goal_type is not specified, it will default to 'NEED', or to 'MF' for Credit Card Payment categories and 'DEBT' for categories paired to a loan account. When updating a category, passing null removes any existing target.
+	// GoalTarget The goal target amount in milliunits format.  If value is specified and goal has not already been configured for category, a monthly goal will be created for the category with this target amount.  If goal_type is not specified, it will default to 'NEED', or to 'MF' for Credit Card Payment categories and 'DEBT' for categories paired to a loan account. Must not be negative. When updating a category, passing null removes any existing target. Passing 0 does too, except for a Credit Card Payment category's 'TBD' (Pay Off Balance by Date) target, where 0 is a valid amount because the card's balance sets it. Use null to remove that target.
 	GoalTarget int64 `json:"goal_target,omitempty,omitzero"`
 
-	// GoalTargetDate The goal target date in ISO format (e.g. 2016-12-01). Not supported for categories paired to a loan account.
+	// GoalTargetDate The goal target date in ISO format (e.g. 2016-12-01). Not supported for categories paired to a loan account. When combined with a goal_frequency of 'monthly' or 'yearly', this is the date the recurring target is next due. Required for yearly targets, so it cannot be removed from one.
 	GoalTargetDate openapi_types.Date `json:"goal_target_date,omitempty,omitzero"`
 	Name           string             `json:"name,omitempty,omitzero"`
 	Note           string             `json:"note,omitempty,omitzero"`
 }
 
-// SaveCategoryGoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. Cannot be combined with goal_target_date and is not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
+// SaveCategoryGoalFrequency When specified, configures a recurring 'NEED' target of goal_target that repeats at this frequency, replacing any existing target. Requires goal_target. 'yearly' also requires goal_target_date, the date the target is next due. 'monthly' accepts an optional goal_target_date, and 'weekly' cannot be combined with goal_target_date. Not supported for Credit Card Payment categories or categories paired to a loan account. Omit to leave an existing target's cadence unchanged.
 type SaveCategoryGoalFrequency string
 
 // SaveCategoryGroup defines model for SaveCategoryGroup.
