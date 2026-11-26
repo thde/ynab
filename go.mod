@@ -3,7 +3,7 @@ module thde.io/ynab
 go 1.26.0
 
 require (
-	github.com/oapi-codegen/runtime v1.9.0
+	github.com/oapi-codegen/runtime v1.9.1
 	golang.org/x/time v0.16.0
 )
 
